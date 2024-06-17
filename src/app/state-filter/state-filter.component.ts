@@ -3,15 +3,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-interface Country {
+interface State {
   value: string;
   label: string;
 }
-
-interface State {
-  state: string;
-}
-
 
 @Component({
   selector: 'app-state-filter',
@@ -21,9 +16,9 @@ interface State {
   styleUrl: './state-filter.component.css'
 })
 export class StateFilterComponent {
-  selectedCountry: string = '';
-  selectedState: string = 'AZ';
-  countries: Country[] = [
+  selectedState: string = ''; // Variable to hold selected state value
+  states: State[] = [
+
     { value: 'AL', label: 'Alabama' },
 { value: 'AK', label: 'Alaska' },
 { value: 'AZ', label: 'Arizona' },
@@ -76,26 +71,44 @@ export class StateFilterComponent {
 { value: 'WY', label: 'Wyoming' }
 
 ];
-states: State[] = []; // Array to hold list of states
+dailyCases: number = 0; // Variable to hold the number of daily cases
+positiveCases: number = 0;
 
 constructor(private http: HttpClient) {}
 
-onCountryChange() {
-  if (this.selectedCountry) {
-    const state = this.selectedCountry.toLowerCase(); // Assuming state code is the lowercase country code
+onStateChange() {
+  if (this.selectedState) {
+    const state = this.selectedState.toLowerCase(); // Convert state code to lowercase
     const apiUrl = `https://api.covidtracking.com/v1/states/${state}/daily.json`;
 
     // Make HTTP GET request to API
-    this.http.get(apiUrl).subscribe(
-      (data) => {
+    this.http.get<any[]>(apiUrl).subscribe(
+      (data: any[]) => { // Ensure TypeScript understands 'data' as an array of 'any'
         console.log('API Response:', data);
-        // Handle API response here, update UI or store data as needed
+        // Assuming 'positiveIncrease' represents daily new cases in the API response
+        if (data.length > 0) {
+          this.dailyCases = data[0].total || 0; // Default to 0 if data[0].positiveIncrease is undefined
+        } else {
+          this.dailyCases = 0; // Set to 0 if no data is returned
+        }
       },
       (error) => {
         console.error('API Error:', error);
-        // Handle errors appropriately
+        this.dailyCases = 0; // Handle errors by setting dailyCases to 0
       }
     );
-  }
-}
-}
+      // Make HTTP GET request to API for positive cases
+      const positiveCasesUrl = `https://api.covidtracking.com/v1/states/${state}/current.json`;
+      this.http.get<any>(positiveCasesUrl).subscribe(
+        (data) => {
+          console.log('Positive Cases API Response:', data);
+          this.positiveCases = data.positive || 0;
+        },
+        (error) => {
+          console.error('Positive Cases API Error:', error);
+          this.positiveCases = 0;
+        }
+      );
+    }
+    }
+    }
