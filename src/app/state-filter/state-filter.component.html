@@ -1,5 +1,7 @@
-<select id="country" placeholder="Select Country" name="country" [(ngModel)]="selectedCountry" (change)="onCountryChange()">
-    <option value="" disabled selected>Select Country</option>
-    <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}</option>
-  </select>
-  
+<div class="flex items-center gap-x-3 mx-5 md:mx-10 mt-10">
+    <label>Select State:</label>
+    <select id="country" placeholder="Select Country" name="country" [(ngModel)]="selectedCountry" (change)="onCountryChange()">
+        <option value="" disabled selected>Select Country</option>
+        <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}</option>
+      </select> 
+</div>

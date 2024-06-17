@@ -22,7 +22,7 @@ interface State {
 })
 export class StateFilterComponent {
   selectedCountry: string = '';
-  selectedState: string = '';
+  selectedState: string = 'AZ';
   countries: Country[] = [
     { value: 'AL', label: 'Alabama' },
 { value: 'AK', label: 'Alaska' },
