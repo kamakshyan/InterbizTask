@@ -71,8 +71,12 @@ export class StateFilterComponent {
 { value: 'WY', label: 'Wyoming' }
 
 ];
+
+getData  = [];
 dailyCases: number = 0; // Variable to hold the number of daily cases
 positiveCases: number = 0;
+percentChange: number = 0;
+recovered: number = 0;
 
 constructor(private http: HttpClient) {}
 
@@ -88,6 +92,11 @@ onStateChange() {
         // Assuming 'positiveIncrease' represents daily new cases in the API response
         if (data.length > 0) {
           this.dailyCases = data[0].total || 0; // Default to 0 if data[0].positiveIncrease is undefined
+          // this.positiveCases = data[0].total;
+          const percentChange = (((data[1].total - data[0].total) / data[1].total) * 100).toFixed(2);
+          this.percentChange = parseFloat(percentChange);
+          this.recovered = data[0].recovered || 0;
+
         } else {
           this.dailyCases = 0; // Set to 0 if no data is returned
         }
