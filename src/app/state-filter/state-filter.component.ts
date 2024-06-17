@@ -18,6 +18,7 @@ interface State {
 export class StateFilterComponent {
   selectedState: string = ''; // Variable to hold selected state value
   states: State[] = [
+
     { value: 'AL', label: 'Alabama' },
 { value: 'AK', label: 'Alaska' },
 { value: 'AZ', label: 'Arizona' },
