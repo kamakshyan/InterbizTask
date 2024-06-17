@@ -1,3 +1,5 @@
-<div class="mx-5 md:mx-10">
-State Filter
-</div>
+<select id="country" placeholder="Select Country" name="country" [(ngModel)]="selectedCountry" (change)="onCountryChange()">
+    <option value="" disabled selected>Select Country</option>
+    <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}</option>
+  </select>
+  
